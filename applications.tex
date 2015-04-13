@@ -1,0 +1,18 @@
+\chapter{Applications}
+\label{chap:applications}
+In this chapter, several applications that have been already integrated into Halef will be discussed.
+
+\section{Voice Enabled Question Answering using OpenEphyra}
+This was the first application that has been built for Halef's demoing purposes.
+The application's idea is to integrate OpenEphyra, a question answering system inspired by IBM's Watson, into Halef, thus creating a voice enabled service for question answering.
+Of course this application had one major challenge, being how to train a generic enough language model to enable the recognizer to effectively recognize questions that have no specific domain.
+For our demo, we created a small grammar consisting of a few questions and then the user calls in, asks a question out of those, the reconition result is then passed to OpenEphyra to get a suitable answer, then the answer is synthesized and played out to the user.
+
+\section{Stuttgart's VVS Transportation System}
+The second application is one that serves the city of Stuttgart, Germany through providing a service to get the next available Verkehrsverbund Stuttgart (VVS) transportation route from one station to another.
+The user calls in and is asked to provide the name of the route's start station, then is prompted to provide the name of the end station and finally, the route is queried through the VVS API to get the next available route which is then prompted out to the user.
+The user is prompted the number of the transportation line to take, the timing it leaves from the start station and the timing it arrives at the end station.
+If the route isn't a direct one, the user is prompted the details of each and every connection in the format explained previously.
+The API is queried through HTTP GET requests, and it then provides the results in XML form which then needs to be parsed to extract the details of the route, then put it in a suitable format to be passed as voice output to the user.
+Since the applications for Halef are written in JVXML, the funtionality to deal with the API needed to be written in another language, then the JVXML server will deal with it as a service to query and get the results.
+The service to deal with the VVS API was made in Java and it actively listens to requests sent to it by the JVXML server as they communicate through JSON objects.

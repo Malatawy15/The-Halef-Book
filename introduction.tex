@@ -1,0 +1,28 @@
+\chapter{Introduction}
+\label{chap:intro}
+
+Over the past few years, conversational agents have grown in importance, conquering the world of technology by finally being available even in the smallest of devices that everyone has nowadays, smartphones.
+Conversational agents have been widely used for years in a variety of applications even before smartphones came by, like phone call routing and other simple, limited domain applications.
+But in the smartphones age, all of today's smartphones ship with a virtual voice assistant as big tech companies such as Google, Microsoft and Apple compete in providing the most functionality through such assistants, enabling their users to control their phones hands-free.
+However, most of these advancements are proprietary software and the open source community is yet to catch up.
+
+This work describes Halef, an open source, industry standards compliant spoken dialog system, which aims at bridging that gap between proprietary software and it's open source counterpart.
+Halef works in a unique distributed architecture, splitting it into three main components, with the ability to split those three main components even further giving a high degree of flexibility and easily allowing multiple different architectures to suit each use case.
+In addition to all that, all protocols that Halef runs on; SIP and MRCP/RTP, are industry standards compliant, making it suitable and trusted for use in industry as well as research.
+The Halef application development language, JVXML, is also widely recognized in the community and many proprietary softwares out there already use it as well to define their applications.
+So, with all that in mind, we will jump into the nitty gritty details of Halef in the next few sections, describing how it works as well as how to tweak it for use in different areas of application with a variety of distributed architectures.
+
+\section{Objectives} \label{sec:s1}
+The main goal of this work is to describe Halef in as much detail as possible, from the conceptual and architectural level, to the classes distribution and actual code level.
+With three independent servers forming the backbone of Halef, each will be described in detail as to how it runs, its own architecture and finally, how it works to serve the requests it receives to contribute to the work of the whole system.
+Several practices and areas for change and improvement will be pointed out throughout the whole book and finally summarized in the final chapters.
+Some applications that have been integrated and tested with Halef will also be included to demonstrate how Halef can serve different apps as well as how to overcome some difficulties with needed features that are not part of the system yet.
+
+\section{Structure}
+This book starts the walk through Halef by describing the first server, the Cairo server, in chapter \ref{chap:cairo}.
+This chapter will go into Cairo's architecture and how to start its different components.
+It then describes the lifecycle of the five main requests this server has to handle, the SIP invite, SIP bye, MRCP recognize, MRCP record and MRCP sythesize requests.
+\par
+The next chapter, \ref{chap:jvxml}, describes the JVXML server, starting from parsing the application file to communicating with the Cairo server to satisfy the regonition and synhtesis requests.
+\par
+Finally, some applications that have been already integrated into Halef will be described, in addition to the suggested future work on the system, before concluding the book.

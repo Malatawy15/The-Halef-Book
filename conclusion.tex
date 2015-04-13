@@ -1,0 +1,9 @@
+\chapter{Conclusion}\label{chap:concl}
+
+In the end, here is a wrap up of what Halef is, and how it operates.
+Halef, the open source, industry standards compliant spoken dialog system, consists of three main servers, namely, the Asterisk call management server, the Cairo server for recognizing, recoding and synthesizing speech and the JVXML server for parsing the applications and issuing the recognition, recoding and synthesis requests to the Cairo server.
+The user call starts at the Asterisk server, which receives the user call over SIP or PSTN, then routes the user to the correct application according to the entered extension.
+This call is then connected to the suitable JVXML server which will fetch the correct application file, parse it and execute it.
+During the application's execution, the required recognition and synthesis requests are then sent over to the Cairo server to carry them out and return their respective results.
+Speech data is passed between the servers using MRCP over RTP which follows the industry's standards and the applications are developed using JVXML, which is also widely used in speech applications, also following industry standards.
+

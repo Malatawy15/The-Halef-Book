@@ -1,0 +1,27 @@
+\appendix
+\renewcommand{\appendixtocname}{Appendix}
+\renewcommand{\appendixpagename}{\appendixtocname}
+\addappheadtotoc
+\setboolean{@twoside}{false}
+\appendixpage
+
+\chapter{Lists}
+\addcontentsline{toc}{section}{List of Abbreviations}
+\begin{acronym}[\hspace{3cm}]
+  \acro{ac}[AC]{Acronym Without Citation}
+  \acro{ac2}[AC2]{Acronym With Citation \cite{citeKey2}}
+  \acro{sds}[SDS]{Spoken Dialog System}
+  \acro{jvxml}[JVXML]{JVoiceXML}
+  \acro{sdp}[SDP]{Session Description Protocol}
+  \acro{sip}[SIP]{Session Initialization Protocol}
+  \acro{rmi}[RMI]{Remote Method Invocation}
+\end{acronym}
+\clearpage
+\listoffigures
+\addcontentsline{toc}{section}{List of Figures}
+\lstlistoflistings
+\addcontentsline{toc}{section}{List of Listings}
+%\begin{lstlisting}[label=code:cairoconfig]
+%\end{lstlisting}
+% \listoftables
+% \addcontentsline{toc}{section}{List of Tables}
