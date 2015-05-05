@@ -3,8 +3,8 @@ The Cairo server serves as the main hub for managing Halef's resources for speec
 It works as a stand-alone server waiting for any recognition or synthesis requests from the \ac{jvxml} server. It then performs the desired operations and replies to the \ac{jvxml} server with the operations' results.
 The Cairo server starts three different threads; a resource server thread, a receiver resource thread and a transmitter resource thread.
 The main architecture of the Cairo server is described in figure~\ref{fig:cairoserver}.
-In its communication with the \ac{jvxml} server, three protocols are used; \ac{sip} for call initiation and ending, and MRCP over RTP for audio streaming using VoIP in addtion to sending and receiving recognition/synthesis requests and responses.
-With this distinction, two different types of request flows arise; the \ac{sip} request lifecycle and the MRCP request lifecycle, each of which will be described in the following sections.
+In its communication with the \ac{jvxml} server, three protocols are used; \ac{sip} for call initiation and ending, and MRCP over RTP for audio streaming using VoIP in addition to sending and receiving recognition/synthesis requests and responses.
+With this distinction, two different types of request flows arise; the \ac{sip} request life cycle and the MRCP request life cycle, each of which will be described in the following sections.
 But first, let's have a look at how to configure and start the Cairo server.
 \begin{figure}[h]
   \centering
@@ -34,33 +34,33 @@ The configuration is split into two main parts; receiver and transmitter, as you
 }
 \lstinputlisting{resources/files/cairo-config.xml}
 
-\subsection{Configuiring the Receiver Resource}
-The configuration of the receiver resource is specified in the \lstinline$<resource type="receiver">$ part of the Cairo configuiration file.
+\subsection{Configuring the Receiver Resource}
+The configuration of the receiver resource is specified in the \lstinline$<resource type="receiver">$ part of the Cairo configuration file.
 This is split into a few main parts:
 \begin{description}
   \item[baseGrammarDir] This is where to store the grammar file for recognition if it is sent over the network to the Cairo server. This functionality is currently disabled as only the grammar file's URL is sent over the network.
-  \item[baseRecordingDir] This is where to save the speech utterances as wav files after the recording process is done by the SphinxRecorder. 
+  \item[baseRecordingDir] This is where to save the speech utterances as wav files after the recording process is done by the \textit{SphinxRecorder}. 
   \item[engines] This is the maximum number of recognition engines per pool.
-  \item[ipAddress] This is to specify the IP address of the resource. You generally don't need to specify this as the IP address is obtained programatically.
+  \item[ipAddress] This is to specify the IP address of the resource. You generally don't need to specify this as the IP address is obtained automatically.
   \item[maxConnects] This is the maximum number of allowed parallel sessions to connect to this receiver resource.
   \item[mrcpPort] This is the MRCP port for the receiver resource. This should be the same as the MRCP transmitter port of the \ac{jvxml} server.
-  \item[name] This is the identifier for the receiver being configuired. The convention is to have the name as "receiver\$index".
+  \item[name] This is the identifier for the receiver being configured. The convention is to have the name as "receiver\$index".
   \item[recorderEngines] This is the maximum number of recorder engines per pool.
   \item[rtpBasePort] This is the RTP port for the receiver resource. This should be the same as the RTP transmitter port of the \ac{jvxml} server.
-  \item[sphinxConfigURL] This is the path to the Sphinx recognizer configuiration file. You generally don't need to specify this if the file is compiled into the "resources/config/" folder in Cairo.
-  \item[sphinxRecorderConfigURL] This is the path to the Sphinx recorder configuiration file. You generally don't need to specify this if the file is compiled into the "resources/config/" folder in Cairo. 
+  \item[sphinxConfigURL] This is the path to the Sphinx recognizer configuration file. You generally don't need to specify this if the file is compiled into the "resources/config/" folder in Cairo.
+  \item[sphinxRecorderConfigURL] This is the path to the Sphinx recorder configuration file. You generally don't need to specify this if the file is compiled into the "resources/config/" folder in Cairo. 
 \end{description}
 
-\subsection{Configuiring the Transmitter Resource}
-The configuration of the transmitter resource is specified in the \lstinline$<resource type="transmitter">$ part of the Cairo configuiration file.
+\subsection{Configuring the Transmitter Resource}
+The configuration of the transmitter resource is specified in the \lstinline$<resource type="transmitter">$ part of the Cairo configuration file.
 This is also split into a few main parts:
 \begin{description}
-  \item[basePromptDir] This is where to save the synthesized speech wav file after the speech synthesisizer is done. 
+  \item[basePromptDir] This is where to save the synthesized speech wav file after the speech synthesizer is done. 
   \item[engines] This is the maximum number of synthesis engines per pool.
-  \item[ipAddress] This is to specify the IP address of the resource. You generally don't need to specify this as the IP address is obtained programatically.
+  \item[ipAddress] This is to specify the IP address of the resource. You generally don't need to specify this as the IP address is obtained automatically.
   \item[maxConnects] This is the maximum number of allowed parallel sessions to connect to this transmitter resource.
   \item[mrcpPort] This is the MRCP port for the transmitter resource. This should be the same as the MRCP receiver port of the \ac{jvxml} server.
-  \item[name] This is the identifier for the receiver being configuired. The convention is to have the name as "transmitter\$index".
+  \item[name] This is the identifier for the receiver being configured. The convention is to have the name as "transmitter\$index".
   \item[rtpBasePort] This is the RTP port for the transmitter resource. This should be the same as the RTP receiver port of the \ac{jvxml} server.
   \item[voiceName] This is the voice to be used by the FreeTTS synthesizer.
 \end{description}
@@ -107,7 +107,7 @@ Secondly, the receiver resource thread is launched and passed the Cairo configur
   language=bash,
   tabsize=2,
   caption=Cairo Receiver Resource Starting Script,
-  label=code:startcairo,
+  label=code:startreceiver,
   basicstyle={\small\ttfamily},
   %emph={bash, sleep},emphstyle={\color{blue} \bf},
   emph={CLASS,\$CLASS,CAIRO_CONFIG,\$CAIRO_CONFIG,RES_NAME,\$RES_NAME},emphstyle={\color{magenta}},
@@ -118,12 +118,12 @@ Secondly, the receiver resource thread is launched and passed the Cairo configur
   belowskip=10pt
 }
 \lstinputlisting{resources/files/receiver1.sh}
-Lastly, the trasmitter resource thread is started and passed the same kind of arguments as the receiver resource
+Lastly, the transmitter resource thread is started and passed the same kind of arguments as the receiver resource
 \lstset{
   language=bash,
   tabsize=2,
   caption=Cairo Transmitter Resource Starting Script,
-  label=code:startcairo,
+  label=code:starttransmitter,
   basicstyle={\small\ttfamily},
   emph={CLASS,\$CLASS,CAIRO_CONFIG,\$CAIRO_CONFIG,RES_NAME,\$RES_NAME},emphstyle={\color{magenta}},
   numbers=left,
@@ -133,13 +133,13 @@ Lastly, the trasmitter resource thread is started and passed the same kind of ar
   belowskip=10pt
 }
 \lstinputlisting{resources/files/transmitter1.sh}
-Now that the Cairo server is up and running, it is ready to receive call initiation requests over \ac{sip}, so, let's have a look at the \ac{sip} requests lifecycle.
+Now that the Cairo server is up and running, it is ready to receive call initiation requests over \ac{sip}, so, let's have a look at the \ac{sip} requests life cycle.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{SIP Request Lifecycle}
+\section{SIP Request Life Cycle}
 As the calls flow into Halef, there should be a way to communicate the call initialization and termination requests between all three servers.
 The \ac{sip} protocol is used for this exact purpose.
 \ac{sip} provides two main types of requests, namely, an invite and a bye request, each of which is self explanatory to the nature of its purpose.
@@ -148,14 +148,14 @@ In the following subsections, we're going to look at how Cairo prepares itself f
 \subsection{Setting Up \ac{sip} in Cairo}
 The \ac{sip} service is set up in Cairo's resource server thread as it acts as the main hub for receiving and handling the different types of \ac{sip} requests.
 The resource server, represented by the \textit{org.speechforge.cairo.server.resource.ResourceServerImpl} class, implements a \ac{sip} session listener interface that allows it to work with the \ac{sip} protocol.
-When the resource server thread is first run, it receives its SIP parameters from the commandline launching it, configures its own SIP agent accordingly and launches it, making the Cairo server ready for listening to SIP requests.
+When the resource server thread is first run, it receives its SIP parameters from the command line launching it, configures its own SIP agent accordingly and launches it, making the Cairo server ready for listening to SIP requests.
 The SIP agent is the main responsible for sending and receiving SIP requests and responses while the resource server is the one that determines how Halef uses and handles such requests.
 Once the SIP agent receives an invite request, it calls the resource server's \textit{processInviteRequest} method that continues on to process and act upon such request.
 Similarly, when the SIP agent receive a bye request, it calls the resource server's \textit{processByeRequest} method that processes and acts upon such request.
-Both types of requests intialize a sequence of operations to be done by the Cairo server, which are described in detail in the following sections.
+Both types of requests initialize a sequence of operations to be done by the Cairo server, which are described in detail in the following sections.
 
 \subsection{\ac{sip} Invite Request}
-As mentioned earlier, once the SIP agent receives an invite request, it calls the resource server's \textit{processInviteRequest} method which then intiates a series of operations through the \textit{invite} method.
+As mentioned earlier, once the SIP agent receives an invite request, it calls the resource server's \textit{processInviteRequest} method which then initiates a series of operations through the \textit{invite} method.
 The \textit{invite} method iterates through the MRCP channels that are included in the \ac{sdp} message the invite request is outlined in.
 It looks for three types of channels; receiver, recorder and transmitter channels.
 For each channel, its ID is extracted, formatted and included among other attributes in the media description for such channel.
@@ -163,7 +163,7 @@ This step serves to identify the resources requested by the \ac{jvxml} server fo
 Once the processing of all sessions is done, the two flags are checked and the suitable resources are requested accordingly.
 
 \subsubsection{Requesting a Resource}
-The Cairo server functions in a kind of service based approach, having its different resources running on seperate threads or maybe even servers, taking advantage of Java's \ac{rmi} API to glue all the parts together.
+The Cairo server functions in a kind of service based approach, having its different resources running on separate threads or maybe even servers, taking advantage of Java's \ac{rmi} API to glue all the parts together.
 As mentioned earlier, the Cairo server is composed of three main threads; a resource server, a receiver resource and a transmitter resource.
 The SIP invite message is received on the resource server thread, but it then needs to request the different resources that are needed for the call, although they are running on other threads.
 So how is this done?
@@ -176,7 +176,7 @@ If a free resource of that type is found, it is given to the resource server whi
 
 \subsubsection{Requesting a Receiver Resource}
 Before getting into what happens when a receiver resource is tied to a certain \ac{sip} session, let's first see how a receiver resource is structured.
-The receiver resource has three different object pools; a regonition one, a recorder one and a RTP stream replicator one.
+The receiver resource has three different object pools; a recognition one, a recorder one and a RTP stream replicator one.
 However, the recognition one is replaced by a recognition interface that will handle all different types of recognition engines to provide flexibility.
 It also has a MRCP server socket to communicate with the \ac{jvxml} server over MRCP once the channels are set up.
 When the \textit{invite} method of a receiver resource is called, a series of operations is triggered to set up the MRCP channels and borrow the necessary objects from their respective object pools.
@@ -194,17 +194,21 @@ It iterates through all of the resources in that session calling the \textit{bye
 As we have only two types of resources, transmitter and receiver, we will examine the bye methods for both resources.
 
 \subsubsection{Releasing a Receiver Resource}
-The receiver resource has a few bound resources that should be released once the call is 
+The receiver resource has a few bound resources that should be released once the call is terminated.
+The SIP session's ID is passed to the \textit{bye} method, enabling it to retrieve the session's resources from the \textit{ResourceSession} class.
+It then goes through all of the resources bound to the session, signaling the MRCP server to close the opened channels and shutting down the \textit{RTPStreamReplicator}s and returning them to their pool.
+It finally removes the session from the \textit{ResourceSession} map.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{MRCP Recognition Request Lifecycle}
+\newpage
+\section{MRCP Recognition Request Life Cycle}
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=11cm]{resources/images/MRCP-Recognition-Request-Lifecycle.png}
-  \caption{MRCP Recognition Request Lifecycle}
+  \caption{MRCP Recognition Request Life Cycle}
   \label{fig:mrcprecognitionrequestlifecycle}
 \end{figure}
 
@@ -215,7 +219,7 @@ During the channels setup, an object of type \textit{org.speechforge.cairo.serve
 When a recognition request is sent by the \ac{jvxml} server over a certain MRCP channel, it fires the \textit{recognize} method in the respective \textit{MrcpRecogChannel}.
 This method receives the MRCP message, does some preprocessing accordingly, then delegates the actual recognition part to the allocated \textit{org.speechforge.cairo.server.recog.RTPRecogChannel}.
 After doing some checks on the current state of this channel and whether this message has any contents, the \textit{invite} method proceeds to parse the recognition request, extracting first the requested recognizer type.
-The currently supported recognizer types are Sphinx JSGF and Sphinx Arpa recognizers specified in the message as "application/jsgf" and "application/arpa" respectively.
+The currently supported recognizer types are Sphinx JSGF and Sphinx ARPA recognizers specified in the message as "application/jsgf" and "application/arpa" respectively.
 It then proceeds to extract the URL of the language model file to be used in satisfying this recognition request.
 \lstset{
   language=java,
@@ -234,7 +238,7 @@ It then proceeds to extract the URL of the language model file to be used in sat
 At this point, the recognition process is delegated to the \textit{RTPRecogChannel} through passing the extracted information from the MRCP message along with a callback listener to the \textit{RTPRecogChannel.recognize} method.\\
 The \textit{RTPRecogChannel} handles all the dirty work involved in the recognition process, setting up data streams and needed recognizers, then calling the suitable methods through the recognition interface to complete the recognition process.
 It starts by extracting the data stream from the \textit{RTPStreamReplicator} into the format that will be used in all later stages which is \textit{javax.media.protocol.PushBufferDataSource}.
-It then starts the recognition process through the recognition interface, implemented through the class \textit{org.speechforge.cairo.server.recog.RecogInterface}, by first activating the needed recognizer through calling the \textit{RecogInterface.activateRecEngine} method with the specified application type and the langauge model's URL.
+It then starts the recognition process through the recognition interface, implemented through the class \textit{org.speechforge.cairo.server.recog.RecogInterface}, by first activating the needed recognizer through calling the \textit{RecogInterface.activateRecEngine} method with the specified application type and the language model's URL.
 The actual recognition process is started then through the \textit{RecogInterface.startRecognition} method passing to it the previously extracted \textit{PushBufferDataSource} and a callback listener.
 From this point onwards, the recognition interface will assume leadership of the process, picking the suitable recognizer that the application has asked for, starting recognition through this recognizer, then handing the result back to the \textit{RTPRecogChannel} through the callback listener.
 
@@ -248,7 +252,7 @@ Let's dive now into the details of how the recognition interface works.
 
 \subsubsection{Managing the Different Recognition Engines}
 The recognition engine needs to have a flexible way of managing the different recognition engines which assumes nothing about which recognizers are in use and which functionality they have to offer.
-In order to satisfy those purposes, a Hashmap, represented by \textit{java.util.HashMap}, is used, mapping the unique recognizer type to recognition engines pool of that type.
+In order to satisfy those purposes, a \textit{java.util.HashMap} is used, mapping the unique recognizer type to recognition engines pool of that type.
 This \textit{String} to \textit{ObjectPool} mapping is generic enough to represent all keys and recognizer types making adding a new recognition engine to Halef a really easy task.
 When a recognition request is placed, the recognition interface will go and fetch the required engine from the relative \textit{ObjectPool} fetched from the map.
 
@@ -269,8 +273,8 @@ When a recognition request is placed, the recognition interface will go and fetc
 
 \subsubsection{Initializing the Recognition Interface}
 The initialization process is pretty straight forward, creating new \textit{ObjectPool}s for the predefined recognizer types.
-During the current setup, the predefined types are hardcoded into the recognition interface with the application type being explicitly specified as \textit{application/jsgf} and \textit{application/arpa}.
-Going forwards, such predefinition can be changed from hardcoding certain types to fetching them from a certain section in the Cairo configuration file, providing more flexibility and saving on memory especially as the number of different recognizers to use becomes bigger.
+During the current setup, the predefined types are hard coded into the recognition interface with the application type being explicitly specified as \textit{application/jsgf} and \textit{application/arpa}.
+Going forwards, such predefinition can be changed from hard coding certain types to fetching them from a certain section in the Cairo configuration file, providing more flexibility and saving on memory especially as the number of different recognizers to use becomes bigger.
 However, if the recognition pool for a certain application type isn't created during the initialization phase, all is not lost.
 If a certain mapping from application type to a certain object pool is specified in the Cairo configuration file, this pool can then be automatically added to the map and the recognition can start with this new type.
 This feature as well is not yet implemented, but it can easily be added in the future, and the way the recognition interface is implemented fully supports that.
@@ -293,7 +297,7 @@ This feature as well is not yet implemented, but it can easily be added in the f
 When a recognition request is placed by the JVXML server and it reaches the recognition interface as part of the request's life cycle, the recognition interface performs the task of fetching the suitable recognition engine, loading the language model into it, then starting the recognition thread.
 First of all, the \textit{RecognitionInterface.activateRecEngine} method is called, providing it with the application type and the location of the language model.
 This method fetches the correct recognition pool, using the application type as the key, from the interface's map.
-It then requests an available recognition engine instance from that pool to carry out this recogniton request.
+It then requests an available recognition engine instance from that pool to carry out this recognition request.
 It is now assumed, as forced by Halef's current capabilities, that only a single recognition request will be taking place at a certain time instance and so, the resources management here is done by saving the currently requested recognition engine as well as its pool into a single instance of \textit{org.speechforge.cairo.server.recog.ActiveRecognizer}.
 \lstset{
   language=java,
@@ -309,11 +313,11 @@ It is now assumed, as forced by Halef's current capabilities, that only a single
   belowskip=10pt
 }
 \lstinputlisting{resources/files/recoginterface_recognizer.java}
-The \textit{ActiveRecognizer} class handles the specifics of managing the current recognition engine according to its type, explicitly loading the language model in it, starting its recognition thread and finally deallocating its language model and returning it to its respective object pool once the recongition is finalized.
-From that point till the end of the recongition request cycle, any functionality called to the recognition interface will be passed to the active recognizer to explicitly call the methods to perform such functionality.
-With the current implementation, the \textit{ActiveRecognizer} assumes knowing the details of the recognizer types that Halef supports and hardcodes test cases for each type to work with it differently.
+The \textit{ActiveRecognizer} class handles the specifics of managing the current recognition engine according to its type, explicitly loading the language model in it, starting its recognition thread and finally deallocating its language model and returning it to its respective object pool once the recognition is finalized.
+From that point till the end of the recognition request cycle, any functionality called to the recognition interface will be passed to the active recognizer to explicitly call the methods to perform such functionality.
+With the current implementation, the \textit{ActiveRecognizer} assumes knowing the details of the recognizer types that Halef supports and hard codes test cases for each type to work with it differently.
 However, for actual generality purposes, it would be better to have an interface that specifies how a recognition engine should act in general, then have every recognition engine type implement it.
-This then would be the way of handling how the \textit{ActiveRecognizer} deals with the required recognition functionlaity, reaching a fully generic implementation that assumes nothing about the recognizer type.
+This then would be the way of handling how the \textit{ActiveRecognizer} deals with the required recognition functionality, reaching a fully generic implementation that assumes nothing about the recognizer type.
 \lstset{
   language=java,
   tabsize=2,
@@ -337,16 +341,16 @@ The result is then passed up from each listener to the layer above it, till it f
 In this section, a speech recognizer's, namely Sphinx4,  support package will be described, also giving an insight on how to integrate any speech recognizer into Halef.
 Sphinx4 has the advantage of being written in Java and thus, it's easy to use its API to integrate it into Halef whose main development language is also Java.
 For other recognizers that aren't written in Java, a Java API has to be provided in order to be able to integrate it into Halef, for example using SWIG for recognizers implemented in C/C++, or by providing recognition as a service.
-The latter however, may need some smart design to create a Java API that simulates an integrated recognition engine to Halef while communicating with the recongition service to obtain the recognition results.
+The latter however, may need some smart design to create a Java API that simulates an integrated recognition engine to Halef while communicating with the recognition service to obtain the recognition results.
 Any recognizer to be added to Halef has to have certain properties, the first is being a poolable object and the second is implementing the \textit{SpeechEventListener} interface.
 The first property guarantees that we can create a pool of several recognition engine objects of that particular recognizer through its factory class, implementing the factory design pattern.
 The second property is one that gives us a way to handle the different speech signals and also propagate the results to the higher levels of abstraction, namely the \textit{RTPRecogChannel} and subsequently the \textit{MRCPRecogChannel}.
 
 \subsubsection{Speech Data Handling}
 The speech data stream is passed to the recognizer through the \textit{startRecognition} method in the form of a \textit{javax.media.protocol.PushBufferDataSource}.
-This stream is passed as is from the \textit{RTPRecogChannel} and should be accomodated to fit the needs of the recognizer in use.
+This stream is passed as is from the \textit{RTPRecogChannel} and should be accommodated to fit the needs of the recognizer in use.
 In the case of Sphinx4, this \textit{PushBufferDataSource} is transformed into a \textit{org.speechforge.cairo.rtp.server.sphinx.RawAudioProcessor} in the \textit{startRecognition} method through the \textit{RawAudioTransferHandler} class.
-The \textit{RawAudioProcessor} class is then responsible for taking the speech data's byte stream and passing it to the Sphinx4 frontend to do the actual recognition.
+The \textit{RawAudioProcessor} class is then responsible for taking the speech data's byte stream and passing it to the Sphinx4 front end to do the actual recognition.
 \lstset{
   language=java,
   tabsize=2,
@@ -363,10 +367,10 @@ The \textit{RawAudioProcessor} class is then responsible for taking the speech d
 \lstinputlisting{resources/files/startrecognition.java}
 
 \subsubsection{Speech Event Listeners}
-As the speech singal is passed as a continuous one over the RTP channel, the Sphinx front-end needs a way to figure out when the actual speeech utterance, not emptiness or noise, to be recognized starts and ends.
+As the speech signal is passed as a continuous one over the RTP channel, the Sphinx front-end needs a way to figure out when the actual speech utterance, not emptiness or noise, to be recognized starts and ends.
 This is done through an instance of the \textit{org.speechforge.cairo.rtp.server.sphinx.SpeechDataMonitor} class.
 This object's configuration is loaded from the Sphinx configuration file, started in the recognition engine's constructor and passed to it is the recognition engine instance as the \textit{SpeechEventListener}.
-When a speech start signal is encountered, the \textit{SpeechDataMonitor} broadcasts a speech start signal to all of its associated \textit{SpeechDataListeners} througth the \textit{broadcastSpeechStartSignal()} method. 
+When a speech start signal is encountered, the \textit{SpeechDataMonitor} broadcasts a speech start signal to all of its associated \textit{SpeechDataListeners} through the \textit{broadcastSpeechStartSignal()} method. 
 Similarly, when a speech end signal is encountered, the \textit{broadcastSpeechEndSignal()} method is used to send a speech end signal to all listeners.
 In the \textit{speechStarted()} method, the abstract class \textit{SphinxRecEngine} does a very simple function which is setting the call back listener to the \textit{RTPRecogChannel}'s \textit{RecogListener} passed to the recognition engine earlier through the \textit{startRecognition()} method.
 At this point, we have an abstract \textit{SphinxRecEngine} class, implementing all the common behaviors of any Sphinx recognition engine disregarding its type.
@@ -374,7 +378,7 @@ We have two different types of recognition engines built over this abstract \tex
 
 \subsubsection{SphinxJSGF Recognition}
 The \textit{SphinxRecEngineJSGF} class is a child of the \textit{SphinxRecEngine} class, implementing the functionality of the Sphinx recognizer for JSGF grammars.
-The class has an instace of \textit{edu.cmu.sphinx.jsapi.JSGFGrammar} which acts as the grammar to plug in and out of the recognizer for each different recognition request.
+The class has an instance of \textit{edu.cmu.sphinx.jsapi.JSGFGrammar} which acts as the grammar to plug in and out of the recognizer for each different recognition request.
 Before each recognition request is fulfilled, the grammar specified in the MRCP message, described before in section \ref{parsemrcp}, has to be loaded through the \textit{load(GrammarLocation)} method.
 This method takes a \textit{GrammarLocation} object as a parameter and loads the specified grammar into the \textit{JSGFGrammar} object.
 \lstset{
@@ -393,7 +397,7 @@ This method takes a \textit{GrammarLocation} object as a parameter and loads the
 \lstinputlisting{resources/files/loadjsgf.java}
 
 Once the grammar is loaded, the recognizer is ready to do the actual recognition through the \textit{startRecognitionThread} method.
-This method will dispatch a separate thread that will initiate and follow up wiht the recognition process.
+This method will dispatch a separate thread that will initiate and follow up with the recognition process.
 The \textit{run} method first starts by calling the \textit{waitForResult} method that will ask the recognition engine to do the recognition then get the recognition result.
 \lstset{
   language=java,
@@ -411,7 +415,7 @@ The \textit{run} method first starts by calling the \textit{waitForResult} metho
 \lstinputlisting{resources/files/runjsgf.java}
 
 The \textit{waitForResult} method gives the command to do the recognition through calling the \textit{recognize} method of the \textit{edu.cmu.sphinx.recognizer.Recognizer} instance that this \textit{SphinxRecEngine} has.
-There are two modes for obtaining the final result, if the hotword flag is set, then it keeps asking for recognition results until it reaches a grammatical result, otherwise, only one result is obtained and returned disregarding its grammaticality.
+There are two modes for obtaining the final result, if the \textit{hotword} flag is set, then it keeps asking for recognition results until it reaches a grammatical result, otherwise, only one result is obtained and returned disregarding its grammaticality.
 \lstset{
   language=java,
   tabsize=2,
@@ -431,7 +435,7 @@ After the recognition result is obtained, it is passed upwards to the \textit{RT
 
 \subsubsection{SphinxARPA Recognition}
 The \textit{SphinxRecEngineARPA} class is a child of the \textit{SphinxRecEngine} class, implementing the functionality of the Sphinx recognizer for ARPA statistic language models.
-The class has an instace of \textit{edu.cmu.sphinx.linguist.language.ngram.SimpleNGramModel} which acts as the ARPA n-gram model to plug in and out of the recognizer for each different recognition request.
+The class has an instance of \textit{edu.cmu.sphinx.linguist.language.ngram.SimpleNGramModel} which acts as the ARPA n-gram model to plug in and out of the recognizer for each different recognition request.
 Before each recognition request is fulfilled, the language model specified in the MRCP message, described before in section \ref{parsemrcp}, has to be loaded through the \textit{load(GrammarLocation)} method.
 This method takes a \textit{GrammarLocation} object as a parameter and loads the specified language model into the \textit{SimpleNGramModel} object.
 \lstset{
@@ -450,7 +454,7 @@ This method takes a \textit{GrammarLocation} object as a parameter and loads the
 \lstinputlisting{resources/files/loadarpa.java}
 
 Once the n-gram language model is loaded, the recognizer is ready to do the actual recognition through the \textit{startRecognitionThread} method.
-This method will dispatch a separate thread that will initiate and follow up wiht the recognition process.
+This method will dispatch a separate thread that will initiate and follow up with the recognition process.
 The \textit{run} method first starts by calling the \textit{waitForResult} method that will ask the recognition engine to do the recognition then get the recognition result.
 \lstset{
   language=java,
@@ -484,5 +488,3 @@ The \textit{waitForResult} method gives the command to do the recognition throug
 \lstinputlisting{resources/files/waitforresultarpa.java}
 
 After the recognition result is obtained, it is passed upwards to the \textit{RTPRecogChannel} through the provided \textit{RecogListener} that was passed downwards during the recognition initiation phase by calling the \textit{recognitionComplete} method.
-
-

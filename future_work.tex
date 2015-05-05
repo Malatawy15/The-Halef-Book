@@ -7,18 +7,29 @@ Throughout the book, a few points have been pointed out as possible areas of add
 In this section, those points will be summarized.
 
 \subsection{Plug in - Plug out Nature for Speech Recognizers and Synthesizers}
+\label{subsec:pluginout}
 The Cairo server was developed as a separate project and it shipped with Sphinx4 and FreeTTS integrated into it.
 This integration goes into the heart of the Cairo server that it makes the job of adding other speech recognizers and synthesizers more difficult than it should be.
 Ideally, Halef should provide an easy interface that allows to plug in and plug out any speech recognizer or synthesizer easily.
 This would give Halef maximum flexibility and would allow it to cope with the new technologies as they roll out.
-The recognition interface described earlier took a step forwards in this direction, achieving some sort of flexibility and allowing the use of two recognizer types instead of one by adding Sphinx4 ARPA to the originally present Sphinx4 JSGF recongizer.
+The recognition interface described earlier took a step forwards in this direction, achieving some sort of flexibility and allowing the use of two recognizer types instead of one by adding Sphinx4 ARPA to the originally present Sphinx4 JSGF recognizer.
 However, the job of adding a totally different recognizer other than Sphinx4 is still an ongoing work as will be explained later.
 During this process, it is expected to meet more areas where the architecture of the Cairo server will have to be changed to provide more separability between it and the Sphinx4 recognizer.
 
 \subsection{Multiple Recognition Threads}
+The Cairo server's architecture is great for parallelization and handling multiple threads of recognition, synthesis or recording.
+However, those features aren't being used yet in the current version of Halef.
+This is enforced by the implementation of the \textit{ActiveRecognizer} class, for example, which operates based on the assumption that there is only one recognition thread currently occurring on this server.
+As the need to scale up grows, multiple recognition threads will definitely be needed and an alternate implementation for the \textit{ActiveRecognizer} class, one that supports multiple concurring recognitions, has to be sought after.
 
-\subsection{Supporting more VXML tags in JVXML}
-
+\subsection{Supporting more \ac{vxml} tags in JVXML}
+The \ac{vxml} Standard 2.1 \cite{vxmlstd} provides a lot of interesting functionality that makes developing speech-based applications using it even more powerful.
+However, the JVXML parser doesn't fully support all of the tags and functionality provided by the \ac{vxml} Standard 2.1.
+This limits the developers' capabilities when making applications for Halef and may be considered a step back to other commercial softwares.
 \section{New Areas of Development}
 
 \subsection{Integrating the Kaldi Recognizer}
+There is an ongoing effort to integrate the Kaldi recognizer into Halef, adding the power and effectiveness of DNNs speech processing to Halef.
+As the effort continues, new limitation points are discovered as Sphinx4 is being decoupled from the Cairo server to make way to different types of recognizers in there.
+This puts to Halef's ability to accommodate different recognizers to test, being a great measure to how far Halef has gone on the way to reaching the desired plug in - plug out nature mentioned earlier in \ref{subsec:pluginout}.
+
