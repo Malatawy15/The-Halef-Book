@@ -11,8 +11,15 @@ For our demo, we created a small grammar consisting of a few questions and then 
 \section{Stuttgart's VVS Transportation System}
 The second application is one that serves the city of Stuttgart, Germany through providing a service to get the next available Verkehrsverbund Stuttgart (VVS) transportation route from one station to another.
 The user calls in and is asked to provide the name of the route's start station, then is prompted to provide the name of the end station and finally, the route is queried through the VVS API to get the next available route which is then prompted out to the user.
-The user is prompted the number of the transportation line to take, the timing it leaves from the start station and the timing it arrives at the end station.
+The user is prompted the number of the transportation line to take, the exact time it leaves from the start station and the timing it arrives at the end station.
 If the route isn't a direct one, the user is prompted the details of each and every connection in the format explained previously.
-The API is queried through HTTP GET requests, and it then provides the results in XML form which then needs to be parsed to extract the details of the route, then put it in a suitable format to be passed as voice output to the user.
-Since the applications for Halef are written in JVXML, the functionality to deal with the API needed to be written in another language, then the JVXML server will deal with it as a service to query and get the results.
-The service to deal with the VVS API was made in Java and it actively listens to requests sent to it by the JVXML server as they communicate through JSON objects.
+\subsection{How It Works}
+As VVS doesn't provide a direct API, \textit{SimpleEFA}, an open source XML-based API for the VVS system is used.
+The API is queried through HTTP GET and POST requests, then providing the results in XML form.
+The results then need to be parsed to extract the details of the route, put it in a suitable format, then send it to the JVXML server to be played as voice output to the user.
+Since the applications for Halef are written in JVXML, the functionality to deal with the API needed to be written in another language, then the JVXML server will deal with the application as a service to query and get the results.
+The service to deal with the VVS API was written in Java and it actively listens to requests sent to it by the JVXML server.
+The JVXML server gathers the data from the user, namely the start and end stations, then sends it to the application server through a POST request.
+The application server receives this request specifying three parameters; \textit{sStation}, \textit{eStation} and \textit{lang}, then formulates a request to query the VVS servers through \textit{SimpleEFA}.
+Once a response is received, the data is sent back to the JVXML server which in turn outputs the result to the caller.
+The application is built to support both English and German languages, specified through the \textit{lang} parameter mentioned earlier.

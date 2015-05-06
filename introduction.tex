@@ -27,18 +27,18 @@ In this section, a brief description of the role of each server will be given, i
 \subsection{The Asterisk Server}
 Asterisk is a free, open source framework that provides the functionality of a telephony server servicing multiple types of connections like SIP, IP PBX and \ac{pstn}.
 The Asterisk project is widely used and recognized by industry, governments and the open source community.
-It has a large user base, providing a lot of support over the forums and the project itself is also documented very well.
+It has a large user base, providing a lot of support over the forums and the project itself is also very well documented.
 You can read more about the Asterisk project on its website\footnote{http://www.asterisk.org/} and the book "Asterisk: A Definitive Guide"\cite{asterisk}.
 In the case of Halef, regular phone calls over \ac{pstn} and VoIP calls over SIP are supported.
-Users can call in to Halef using their telephones or cellphones on the US number assigned to it, or they can call in free using a SIP softphone utilising the provided VoIP service.
+Users can call in to Halef using their telephones or cellphones on the US number assigned to it, or they can call in free using a SIP softphone, utilising the provided VoIP service.
 Either way, the Asterisk server serves as the entry point of a user call into Halef.
 When a user calls in over PSTN or SIP, the Asterisk telephony server picks up the call, welcomes the user then asks for an extension to route the user to.
-Each extension points to a different Halef instance running its own application, providing a robust way of running different Halef instances but connecting them all to the same telephony service that is set up on a single server.
-This reduces the work needed down to only integrating the needed JVXML and Cairo servers with the already running telephony server.
+Each extension points to a different Halef instance running its own application, providing a robust way of running different Halef instances but connecting them all to the same telephony service instace that is set up on a single server.
+Once a wokring instance of the Asterisk server is set up, all the work needed to create a new Halef instance will be reduced to just setting up the needed Cairo and JVXML servers and connecting them to the already running telephony server.
 
 \subsection{The Cairo Server}
 The Cairo server is the core of Halef, being responsible for both speech recognition and synthesis.
-When the call is set up, the Cairo server is connected to the JVXML server over MRCP channels to receive recogntion and synthesis requests, and to the Asterisk Server over RTP to stream audio back and forth to and from the user.
+When the call is set up, the Cairo server is connected to the JVXML server over MRCP channels to receive recognition and synthesis requests, and to the Asterisk server over RTP to stream audio back and forth to and from the user.
 When the Cairo server receives an MRCP recognition request, it chooses the suitable recognizer type specified in the MRCP message through the recognition interface then segments the open RTP stream to detect the speech utterance to recognize, then returns the recognition result to JVXML.
 On the other hand, when it receives a synthesis request, it synthesizes the string specified in the MRCP message then streams the synthesized speech to the user through Asterisk, over RTP.
 The Cairo Server will be described in detail in Chapter \ref{chap:cairo}.
@@ -48,7 +48,7 @@ JVXML is an open-source voice browser for \ac{vxml} written in Java.
 It works as a \ac{vxml} interpreter, parsing and executing the \ac{vxml} applications written to Halef and specified in the JVXML Server's configuration file.
 The JVXML Server connects to Asterisk through SIP and to Cairo through both SIP and MRCP.
 Once a user call is received, Asterisk connects to the JVXML Server through SIP, which then forwards the SIP messages to the Cairo server to set up its MRCP and RTP channels.
-The JVXML server then goes on to parse and execute the specified application, sending recognition and syntesis requests to Cairo over MRCP when the application requests either action.
+The JVXML server then goes on to parse and execute the specified application, sending recognition and synthesis requests to Cairo over MRCP when the application requests either action.
 
 \subsection{Interaction between the Servers}
 The three servers are interconnected over different channels that set up then provide Halef's functionality throughout the user's call.
@@ -58,7 +58,7 @@ The SIP messages sent from the Asterisk server to the JVXML one are then forward
 The Cairo server then uses the information in the messages to allocate and free resources as requested.
 The second connection is between the Cairo and Asterisk servers.
 This connection is over RTP, which is used to send the user's speech stream to Cairo and return the synthesized text prompt to Asterisk so it can play it to the user.
-The third essential conncection is between Cairo and JVXML.
+The third essential connection is between Cairo and JVXML.
 This connection is over MRCP which enables JVXML to send Cairo speech specific requests such as \textit{RECOGNIZE}, \textit{RECORD} and \textit{SYNTHESIZE}.
 Cairo then returns the results of those operations, such as the recognized text for a \textit{RECOGNIZE} request, to JVXML over MRCP as well. 
 
